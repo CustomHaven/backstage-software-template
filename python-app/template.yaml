@@ -16,7 +16,6 @@ spec:
       required:
         - component_id
         - environment
-        - name
       properties:
         component_id:
           title: Component name
