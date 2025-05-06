@@ -39,24 +39,26 @@ spec:
       input:
         url: ./template
         values:
-          name: ${{ parameters.name }}
-          owner: ${{ parameters.owner }}
+          app_name: ${{ parameters.component_id }}
+          app_env: ${{ parameters.environment }}
 
-    - id: fetch-docs
-      name: Fetch Docs
-      action: fetch:plain
-      input:
-        targetPath: ./community
-        url: https://github.com/backstage/community/tree/main/backstage-community-sessions
+    # - id: fetch-docs
+    #   name: Fetch Docs
+    #   action: fetch:plain
+    #   input:
+    #     targetPath: ./community
+    #     url: https://github.com/backstage/community/tree/main/backstage-community-sessions
 
     - id: publish
       name: Publish
       action: publish:github
       input:
         allowedHosts: ['github.com']
-        description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.repoUrl }}
+        description: This is ${{ parameters.component_id }}
+        repoUrl: github.com?owner=customhaven&repo=${{parameters.component_id}}
+        protectDefaultBranch: false
         defaultBranch: 'main'
+        repoVisibility: public
 
     - id: register
       name: Register
