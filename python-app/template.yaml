@@ -41,6 +41,7 @@ spec:
         values:
           app_name: ${{ parameters.component_id }}
           app_env: ${{ parameters.environment }}
+          docker_username: customhaven
 
     # - id: fetch-docs
     #   name: Fetch Docs
