@@ -56,7 +56,7 @@ spec:
       input:
         allowedHosts: ['github.com']
         description: This is ${{ parameters.component_id }}
-        repoUrl: github.com?owner=customhaven-org&repo=${{parameters.component_id}}
+        repoUrl: github.com?owner=customhaven-org&repo=${{ parameters.component_id }}
         protectDefaultBranch: false
         defaultBranch: 'main'
         repoVisibility: public
