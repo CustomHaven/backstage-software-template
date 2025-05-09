@@ -44,7 +44,7 @@ jobs:
         name: Modify values file
         shell: bash
         run: |
-          echo ${{ needs.ci.outputs.commit_id }}
+          echo ${{ '${{ needs.ci.outputs.commit_id }}' }}
           yq -Yi '.image.tag = "${{ '${{ needs.ci.outputs.commit_id }}' }}"' charts/${{ values.app_name }}/values-${{ values.app_env }}.yaml
       - 
         name: Commit changes
