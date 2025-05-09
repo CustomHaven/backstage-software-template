@@ -59,7 +59,7 @@ jobs:
           chmod +x argocd-linux-amd64
           sudo mv argocd-linux-amd64 /usr/local/bin/argocd
       -
-        name: Login to argocd
+        name: Login to ArgoCD
         shell: bash
         run: |
           argocd login ${{ '${{ vars.ARGO_SERVER }}' }} \
@@ -68,7 +68,30 @@ jobs:
             --username ${{ '${{ vars.ARGO_USER }}' }} \
             --password ${{ '${{ secrets.ARGO_PASS }}' }}
       -
-        name: Sync argocd app
+        name: Ensure ArgoCD repo is connected
+        shell: bash
+        run: |
+          repository="https://github.com/customhaven-org/${{ values.app_name }}.git"
+          argocd repo list \
+          | grep -q $repository || \
+          argocd repo add $repository
+      -
+        name: Ensure ArgoCD App is created
+        shell: bash
+        run: |
+          argocd app get ${{ values.app_name }} || \
+          argocd app create ${{ values.app_name }} \
+            --repo $repository \
+            --path charts/${{ values.app_name }} \
+            --dest-namespace ${{ values.app_env }} \
+            --dest-server https://kubernetes.default.svc \
+            --values values-${{ values.app_env }}.yaml \
+            --revision main \
+            --sync-policy none \
+            --sync-option CreateNamespace=true
+      -
+        name: Sync ArgoCD App
         shell: bash
         run: | 
           argocd app sync ${{ values.app_name }}
+          argocd app wait ${{ values.app_name }} --timeout 180
