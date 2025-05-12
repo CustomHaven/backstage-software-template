@@ -79,10 +79,9 @@ jobs:
         name: Ensure ArgoCD App is created
         shell: bash
         run: |
-          echo "The repo is: $repository"
           argocd app get ${{ values.app_name }} || \
           argocd app create ${{ values.app_name }} \
-            --repo $repository \
+            --repo https://github.com/customhaven-org/${{ values.app_name }}.git \
             --path charts/${{ values.app_name }} \
             --dest-namespace ${{ values.app_env }} \
             --dest-server https://kubernetes.default.svc \
